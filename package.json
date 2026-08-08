@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriJobHub Malawi — Careers in Agriculture, Economics &amp; Agribusiness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap header-row">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="34" height="34" rx="3" fill="#20402A"/>
+        <path d="M17 26V13" stroke="#D6A231" stroke-width="2" stroke-linecap="round"/>
+        <path d="M17 13C17 13 11 13 11 8C11 8 17 7 17 13Z" fill="#D6A231"/>
+        <path d="M17 16C17 16 23 16 23 11C23 11 17 10 17 16Z" fill="#EEF0E3"/>
+        <rect x="7" y="26" width="20" height="2" rx="1" fill="#EEF0E3"/>
+      </svg>
+      <span class="logo-text display">Agri<em>Job</em>Hub <small>Malawi</small></span>
+    </div>
+    <nav>
+      <a href="#listings">Find jobs</a>
+      <a href="#companies">Companies</a>
+      <a href="#resources">Resources</a>
+      <a href="#" id="nav-favorites">Saved (<span id="fav-count">0</span>)</a>
+    </nav>
+    <button class="header-cta" id="post-job-btn">Post a job</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Careers across Malawi's field and market economy</div>
+      <h1>Where <span class="accent">agriculture</span> meets economics, agribusiness &amp; management — in Malawi.</h1>
+      <p class="hero-sub">AgriJobHub Malawi gathers open roles across farming operations, agricultural economics, agribusiness, and business administration — from Lilongwe to Blantyre, Mzuzu to Zomba.</p>
+      <div class="stat-row">
+        <div class="stat"><b id="stat-jobs">0</b><span>Open roles</span></div>
+        <div class="stat"><b id="stat-companies">0</b><span>Hiring companies</span></div>
+        <div class="stat"><b>4</b><span>Job categories</span></div>
+      </div>
+    </div>
+    <div class="field-chart" aria-hidden="true">
+      <div class="field-chart-label"><span>HIRING DEMAND BY SECTOR</span><span>THIS QUARTER</span></div>
+      <div class="rows" id="hero-rows"></div>
+    </div>
+  </div>
+</section>
+
+<div class="search-panel">
+  <div class="wrap">
+    <form class="search-form" id="search-form">
+      <input type="text" id="q" placeholder="Job title, keyword, or company">
+      <select id="filter-category">
+        <option value="">All categories</option>
+        <option value="Agriculture">Agriculture</option>
+        <option value="Economics">Economics</option>
+        <option value="Agribusiness">Agribusiness</option>
+        <option value="Business Administration">Business Administration</option>
+      </select>
+      <select id="filter-location">
+        <option value="">All locations</option>
+      </select>
+      <select id="filter-type">
+        <option value="">Any job type</option>
+        <option value="Full-time">Full-time</option>
+        <option value="Part-time">Part-time</option>
+        <option value="Internship">Internship</option>
+      </select>
+      <button type="submit">Search</button>
+    </form>
+    <div class="category-pills" id="category-pills"></div>
+  </div>
+</div>
+
+<section class="listings" id="listings">
+  <div class="wrap">
+    <div class="listings-head">
+      <h2>Open roles</h2>
+      <div style="display:flex; align-items:center; gap:14px;">
+        <span class="result-count" id="result-count"></span>
+        <select class="sort-select" id="sort-select">
+          <option value="recent">Newest first</option>
+          <option value="salary-high">Salary: high to low</option>
+          <option value="salary-low">Salary: low to high</option>
+        </select>
+      </div>
+    </div>
+    <div class="job-grid" id="job-grid"></div>
+  </div>
+</section>
+
+<section class="companies" id="companies">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Who's hiring</div>
+      <h2>Featured employers in Malawi</h2>
+    </div>
+    <div class="company-grid" id="company-grid"></div>
+  </div>
+</section>
+
+<section class="resources" id="resources">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Field notes</div>
+      <h2>Resources &amp; industry reads</h2>
+    </div>
+    <div class="resource-grid" id="resource-grid"></div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <h2>Never miss an opening</h2>
+    <p>Get a weekly digest of new agriculture, economics, agribusiness, and management roles in Malawi.</p>
+    <form id="alert-form" style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+      <input type="email" required placeholder="you@email.com" style="padding:12px 14px; border-radius:2px; border:none; min-width:260px;">
+      <button type="submit" class="btn-primary">Get job alerts</button>
+    </form>
+    <p class="apply-confirm" id="alert-confirm" style="color:var(--wheat); margin-top:10px;">You're subscribed. Watch your inbox.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <span class="footer-note">© 2026 AgriJobHub Malawi</span>
+    <div class="footer-links">
+      <a href="#listings">Find jobs</a>
+      <a href="#companies">Companies</a>
+      <a href="#resources">Resources</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Post-a-job modal -->
+<div class="modal-overlay" id="post-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="post-title">
+    <button class="modal-close" id="post-close" aria-label="Close">&times;</button>
+    <h2 id="post-title">Post a job</h2>
+    <form id="post-form" style="margin-top:16px; display:flex; flex-direction:column; gap:12px;">
+      <input required name="title" placeholder="Job title" style="padding:11px 13px; border:1px solid var(--line); border-radius:2px;">
+      <input required name="company" placeholder="Company name" style="padding:11px 13px; border:1px solid var(--line); border-radius:2px;">
+      <input required name="location" placeholder="Location (e.g. Lilongwe)" style="padding:11px 13px; border:1px solid var(--line); border-radius:2px;">
+      <div style="display:flex; gap:10px;">
+        <select name="category" required style="flex:1; padding:11px 13px; border:1px solid var(--line); border-radius:2px;">
+          <option value="">Category</option>
+          <option value="Agriculture">Agriculture</option>
+          <option value="Economics">Economics</option>
+          <option value="Agribusiness">Agribusiness</option>
+          <option value="Business Administration">Business Administration</option>
+        </select>
+        <select name="type" required style="flex:1; padding:11px 13px; border:1px solid var(--line); border-radius:2px;">
+          <option value="">Job type</option>
+          <option value="Full-time">Full-time</option>
+          <option value="Part-time">Part-time</option>
+          <option value="Internship">Internship</option>
+        </select>
+      </div>
+      <input name="salary" type="number" placeholder="Monthly salary in MWK (optional)" style="padding:11px 13px; border:1px solid var(--line); border-radius:2px;">
+      <textarea name="desc" placeholder="Role description" rows="3" style="padding:11px 13px; border:1px solid var(--line); border-radius:2px; font-family:inherit;"></textarea>
+      <button type="submit" class="btn-primary">Publish listing</button>
+      <p class="apply-confirm" id="post-confirm">Listing published — it now appears in search results.</p>
+    </form>
+  </div>
+</div>
+
+<!-- Job details modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+    <span class="job-cat" id="modal-cat"></span>
+    <h2 id="modal-title" style="margin-top:10px;"></h2>
+    <div class="job-meta" id="modal-meta"></div>
+    <div class="modal-section">
+      <h4>About the role</h4>
+      <p id="modal-desc"></p>
+    </div>
+    <div class="modal-section">
+      <h4>What you'll need</h4>
+      <ul id="modal-reqs"></ul>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" id="modal-apply">Apply now</button>
+      <button class="btn-secondary" id="modal-save">Save job</button>
+    </div>
+    <p class="apply-confirm" id="modal-apply-confirm">Application started — check your email to finish up.</p>
+  </div>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>

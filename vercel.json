@@ -1,0 +1,106 @@
+# AgriJobHub Malawi
+
+A full-stack job board for agriculture, economics, agribusiness, and business
+administration roles in Malawi — Node/Express backend with a JSON REST API,
+and a vanilla HTML/CSS/JS frontend.
+
+## What's included
+
+```
+agrijobhub-app/
+├── server.js          Express server + REST API
+├── package.json        Dependencies and scripts
+├── data/
+│   ├── jobs.json        Seed job listings (Malawi companies & locations)
+│   ├── companies.json   Featured employer profiles
+│   ├── resources.json   Article/resource cards
+│   └── alerts.json       Created automatically when someone subscribes
+└── public/
+    ├── index.html        Page markup
+    ├── styles.css         All styling
+    └── app.js             Frontend logic (fetches from the API)
+```
+
+## Requirements
+
+- [Node.js](https://nodejs.org) version 18 or later (includes npm)
+
+## Setup
+
+1. Unzip the project and open a terminal in the `agrijobhub-app` folder.
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Start the server:
+   ```
+   npm start
+   ```
+4. Open **http://localhost:3000** in your browser.
+
+For auto-restart on file changes during development, use `npm run dev`
+instead (this uses `nodemon`, listed as a dev dependency).
+
+## API endpoints
+
+| Method | Path              | Description                                   |
+|--------|-------------------|------------------------------------------------|
+| GET    | `/api/jobs`        | List jobs. Query params: `q`, `category`, `location`, `type`, `sort` (`recent`, `salary-high`, `salary-low`) |
+| GET    | `/api/jobs/:id`     | Get a single job by id                        |
+| POST   | `/api/jobs`         | Create a new job listing (JSON body)          |
+| GET    | `/api/locations`    | Distinct list of job locations                |
+| GET    | `/api/companies`    | Featured employer profiles                    |
+| GET    | `/api/resources`    | Article/resource cards                        |
+| POST   | `/api/alerts`       | Subscribe an email to job alerts              |
+
+Job data lives in `data/jobs.json` and is read/written by the server, so
+listings posted through the "Post a job" button on the site persist between
+restarts. Favorited jobs are stored in the visitor's browser (`localStorage`),
+not on the server.
+
+## About the seed data
+
+The included jobs and companies (Lilongwe, Blantyre, Mzuzu, Zomba, Kasungu,
+Dwangwa; employers such as FAO Malawi, Illovo Sugar Malawi, Pyxus Agriculture
+Malawi, the Reserve Bank of Malawi, and others) reflect the kinds of roles
+and organizations that regularly recruit in Malawi's agriculture, economics,
+agribusiness, and business administration sectors, based on research done at
+the time this project was built. They are illustrative starting data, not a
+live, auto-updating feed — there's no continuously syncing job-board API
+wired in. To keep listings current, either:
+
+- Edit `data/jobs.json` directly (or use the "Post a job" form), or
+- Wire up `server.js` to fetch from a real job-board API or scraper you have
+  access to (a scheduled fetch that rewrites `jobs.json` would be the
+  simplest way to do this) — swap the `readJSON`/`writeJSON` calls in
+  `server.js` for a database of your choice if you outgrow the JSON files.
+
+## Deploying to Vercel
+
+This project includes a `vercel.json` so it can run as a Vercel serverless
+function:
+
+1. Push this folder to a GitHub repo (or run `vercel` from inside it with the
+   [Vercel CLI](https://vercel.com/docs/cli)).
+2. Import the repo in the Vercel dashboard, or run `vercel deploy`.
+3. No environment variables are required.
+
+**Important tradeoff:** Vercel's filesystem is read-only at runtime except
+for `/tmp`, which is wiped on every cold start and redeploy. This project
+detects `process.env.VERCEL` and writes posted jobs / alert emails to `/tmp`
+instead of `data/`, so it won't crash — but anything posted through the site
+will eventually disappear rather than persisting permanently. For real
+persistence in production, swap the `readJSON`/`writeJSON` calls in
+`server.js` for a database (Vercel Postgres, Supabase, MongoDB Atlas, etc.).
+
+If you don't need the backend features (posting jobs, email alerts) to
+persist across visitors at all, the single self-contained HTML file version
+is simpler to deploy to Vercel/Netlify and never has this issue, since it
+has no server component.
+
+## Notes
+
+- No API keys or external services are required to run this out of the box.
+- Currency is shown in Malawian Kwacha (MWK), monthly.
+- The "Apply now" and "Post a job" actions are functional UI flows for this
+  prototype; they don't yet send real emails or route applications anywhere.

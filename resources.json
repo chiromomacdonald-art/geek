@@ -1,0 +1,258 @@
+[
+  {
+    "id": 1,
+    "title": "Farm Manager — Macadamia Estate",
+    "company": "Gala Agriculture Company Ltd",
+    "location": "Lilongwe",
+    "type": "Full-time",
+    "category": "Agriculture",
+    "salary": 1200000,
+    "postedDaysAgo": 3,
+    "desc": "Run day-to-day operations across a macadamia estate near Lilongwe, covering crew scheduling, irrigation planning, harvest logistics, and organic-certification compliance.",
+    "reqs": [
+      "Diploma or degree in Agriculture, Horticulture, or a related field",
+      "3+ years supervising farm crews or estate operations",
+      "Familiarity with organic certification standards is an advantage"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Agricultural Economist",
+    "company": "Reserve Bank of Malawi",
+    "location": "Lilongwe",
+    "type": "Full-time",
+    "category": "Economics",
+    "salary": 2500000,
+    "postedDaysAgo": 6,
+    "desc": "Analyse maize, tobacco, and export-crop price trends to inform monetary policy briefs, and model how weather shocks and input costs feed into rural household income.",
+    "reqs": [
+      "Bachelor's or Master's in Economics or Agricultural Economics",
+      "Strong quantitative and statistical modelling skills",
+      "Experience writing policy briefs for non-technical audiences"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Agribusiness Specialist (Consultant)",
+    "company": "FAO Malawi",
+    "location": "Lilongwe",
+    "type": "Full-time",
+    "category": "Agribusiness",
+    "salary": 3000000,
+    "postedDaysAgo": 1,
+    "desc": "Advise on value-chain financing and public-private-producer partnerships for smallholder-inclusive agribusiness models, working closely with national business development teams.",
+    "reqs": [
+      "Master's degree in Agribusiness, Agricultural Economics, or related field",
+      "Experience with value-chain assessments and business model design",
+      "Comfortable working with government and donor stakeholders"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Livestock & Poultry Assistant",
+    "company": "Kachere Agriculture Trading Limited",
+    "location": "Kasungu",
+    "type": "Full-time",
+    "category": "Agriculture",
+    "salary": 450000,
+    "postedDaysAgo": 9,
+    "desc": "Support day-to-day care, feeding schedules, and health monitoring for the farm's poultry and small livestock units, reporting to the Farm Manager.",
+    "reqs": [
+      "Certificate or diploma in Animal Health or Livestock Production",
+      "Hands-on experience with poultry or livestock husbandry",
+      "Willing to work early hours and some weekends"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Business Administration Intern",
+    "company": "Illovo Sugar Malawi",
+    "location": "Blantyre",
+    "type": "Internship",
+    "category": "Business Administration",
+    "salary": 150000,
+    "postedDaysAgo": 4,
+    "desc": "Rotate through procurement, finance, and estate administration functions, supporting reporting and vendor coordination for the sugar operation.",
+    "reqs": [
+      "Currently studying or recently graduated in Business Administration or Commerce",
+      "Comfortable with Excel and basic office software",
+      "Available for a 6-month placement"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Grants Writer",
+    "company": "LUANAR (Lilongwe University of Agriculture and Natural Resources)",
+    "location": "Lilongwe",
+    "type": "Full-time",
+    "category": "Business Administration",
+    "salary": 950000,
+    "postedDaysAgo": 12,
+    "desc": "Draft and coordinate funding proposals for agricultural research and outreach programmes, working with faculty to translate research plans into fundable projects.",
+    "reqs": [
+      "Bachelor's degree in a relevant field; postgraduate training an advantage",
+      "Proven grant-writing or proposal-development experience",
+      "Excellent written English and attention to detail"
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Agronomist — Precision & Drone Agriculture",
+    "company": "Drone Link",
+    "location": "Mzuzu",
+    "type": "Full-time",
+    "category": "Agriculture",
+    "salary": 1100000,
+    "postedDaysAgo": 2,
+    "desc": "Combine agronomy fieldwork with drone-based crop monitoring, helping smallholder and commercial clients act on soil health and canopy data.",
+    "reqs": [
+      "Degree in Agronomy, Crop Science, or related field",
+      "Interest in geospatial or drone-based data tools",
+      "Willing to travel to client farms regularly"
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Trade & Value Chain Analyst",
+    "company": "Pyxus Agriculture Malawi",
+    "location": "Kasungu",
+    "type": "Full-time",
+    "category": "Agribusiness",
+    "salary": 1300000,
+    "postedDaysAgo": 7,
+    "desc": "Track tobacco and diversified-crop value chains from farm gate to export, analysing pricing, quality grading, and buyer contracts.",
+    "reqs": [
+      "Bachelor's in Agribusiness, Economics, or Supply Chain",
+      "Strong Excel and data analysis skills",
+      "Understanding of Malawi's tobacco or export-crop sector a plus"
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Rural Economist — Agricultural Policy",
+    "company": "Ministry of Agriculture",
+    "location": "Lilongwe",
+    "type": "Full-time",
+    "category": "Economics",
+    "salary": 900000,
+    "postedDaysAgo": 15,
+    "desc": "Contribute to costing and evaluation of national farm input subsidy and extension programmes, feeding results into ministry policy reviews.",
+    "reqs": [
+      "Degree in Economics, Agricultural Economics, or Public Policy",
+      "Experience with survey data or programme evaluation",
+      "Government or donor-programme experience an advantage"
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Agriculture Extension Officer",
+    "company": "CRS Malawi",
+    "location": "Zomba",
+    "type": "Full-time",
+    "category": "Agriculture",
+    "salary": 700000,
+    "postedDaysAgo": 5,
+    "desc": "Deliver climate-smart agriculture training to smallholder farmer groups and support the roll-out of household food-security interventions.",
+    "reqs": [
+      "Diploma or degree in Agricultural Extension or related field",
+      "Experience facilitating farmer-group training",
+      "Comfortable with extensive field travel across the district"
+    ]
+  },
+  {
+    "id": 11,
+    "title": "HR Business Partner",
+    "company": "Chibuku Products Limited",
+    "location": "Blantyre",
+    "type": "Full-time",
+    "category": "Business Administration",
+    "salary": 1400000,
+    "postedDaysAgo": 8,
+    "desc": "Partner with production and commercial teams on recruitment, performance management, and workforce planning for the Blantyre plant.",
+    "reqs": [
+      "Degree in Human Resources, Business Administration, or related field",
+      "4+ years HR generalist or business partnering experience",
+      "Experience in manufacturing or FMCG preferred"
+    ]
+  },
+  {
+    "id": 12,
+    "title": "Market Systems & Agribusiness Intern",
+    "company": "Njira Impact",
+    "location": "Mzuzu",
+    "type": "Internship",
+    "category": "Agribusiness",
+    "salary": 130000,
+    "postedDaysAgo": 3,
+    "desc": "Support a market-systems team mapping smallholder value chains and helping small agribusinesses access finance and buyers.",
+    "reqs": [
+      "Studying or recently graduated in Agribusiness, Marketing, or Natural Resources Management",
+      "Strong communication skills with rural communities",
+      "Available full-time for at least 4 months"
+    ]
+  },
+  {
+    "id": 13,
+    "title": "Farm Manager — Horticulture",
+    "company": "Kachere Agriculture Trading Limited",
+    "location": "Blantyre",
+    "type": "Full-time",
+    "category": "Agriculture",
+    "salary": 1000000,
+    "postedDaysAgo": 18,
+    "desc": "Oversee a horticulture unit producing vegetables and fruit for regional markets, managing planting schedules, irrigation, and a seasonal field crew.",
+    "reqs": [
+      "Bachelor's or diploma in Agribusiness Management, Horticulture, or General Agriculture",
+      "Proven horticulture production experience",
+      "Strong crew supervision and planning skills"
+    ]
+  },
+  {
+    "id": 14,
+    "title": "Operations Manager",
+    "company": "Imagine Worldwide Malawi",
+    "location": "Lilongwe",
+    "type": "Full-time",
+    "category": "Business Administration",
+    "salary": 1800000,
+    "postedDaysAgo": 10,
+    "desc": "Oversee office operations, logistics, and vendor management for an education-technology programme operating across rural districts.",
+    "reqs": [
+      "Degree in Business Administration, Management, or related field",
+      "5+ years operations or programme-management experience",
+      "Experience with NGO or donor-funded programmes an advantage"
+    ]
+  },
+  {
+    "id": 15,
+    "title": "Sugar Estate Logistics Coordinator",
+    "company": "Unitrans Malawi Limited",
+    "location": "Dwangwa",
+    "type": "Full-time",
+    "category": "Agribusiness",
+    "salary": 1150000,
+    "postedDaysAgo": 14,
+    "desc": "Coordinate haulage schedules and fleet allocation for sugar cane transport between estate fields and the mill during peak crushing season.",
+    "reqs": [
+      "Diploma in Logistics, Transport Management, or Business Administration",
+      "Experience coordinating haulage or fleet operations",
+      "Able to work extended hours during crushing season"
+    ]
+  },
+  {
+    "id": 16,
+    "title": "Climate Resilience Economist",
+    "company": "World Food Programme (WFP) Malawi",
+    "location": "Lilongwe",
+    "type": "Full-time",
+    "category": "Economics",
+    "salary": 2800000,
+    "postedDaysAgo": 2,
+    "desc": "Model the economic impact of drought and flood shocks on food security, and support cost-benefit analysis of anticipatory-action and resilience programmes.",
+    "reqs": [
+      "Master's degree in Economics, Development Economics, or related field",
+      "Experience with climate or disaster-risk economic modelling",
+      "Strong report-writing skills for donor audiences"
+    ]
+  }
+]

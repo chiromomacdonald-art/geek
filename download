@@ -1,0 +1,372 @@
+// ---------- STATE ----------
+let allJobs = [];
+let companies = [];
+let favorites = new Set(JSON.parse(localStorage.getItem('agrijobhub_favorites') || '[]'));
+let currentFilters = { q: '', category: '', location: '', type: '' };
+let currentSort = 'recent';
+let showingFavoritesOnly = false;
+
+// ---------- API HELPERS ----------
+async function fetchJSON(url, options) {
+  const res = await fetch(url, options);
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || `Request failed: ${res.status}`);
+  }
+  return res.json();
+}
+
+function buildQuery(params) {
+  const usp = new URLSearchParams();
+  Object.entries(params).forEach(([k, v]) => { if (v) usp.set(k, v); });
+  return usp.toString();
+}
+
+// ---------- INIT ----------
+async function init() {
+  wireEvents();
+  const [jobs, companyList, resources, locations] = await Promise.all([
+    fetchJSON('/api/jobs'),
+    fetchJSON('/api/companies'),
+    fetchJSON('/api/resources'),
+    fetchJSON('/api/locations')
+  ]);
+  allJobs = jobs;
+  companies = companyList;
+
+  document.getElementById('stat-jobs').textContent = allJobs.length;
+  document.getElementById('stat-companies').textContent = companies.length;
+  document.getElementById('fav-count').textContent = favorites.size;
+
+  buildHeroRows(allJobs);
+  buildLocationOptions(locations);
+  buildCategoryPills();
+  buildCompanies(companies);
+  buildResources(resources);
+  await refreshJobs();
+}
+
+// ---------- HERO CHART ----------
+function buildHeroRows(jobs) {
+  const cats = ['Agriculture', 'Economics', 'Agribusiness', 'Business Administration'];
+  const container = document.getElementById('hero-rows');
+  container.innerHTML = '';
+  cats.forEach((cat, i) => {
+    const count = jobs.filter((j) => j.category === cat).length;
+    const pct = 30 + count * 14;
+    const bar = document.createElement('div');
+    bar.className = 'row-bar';
+    bar.style.height = pct + '%';
+    bar.style.animationDelay = i * 90 + 'ms';
+    bar.innerHTML = `<span>${cat.split(' ')[0]}</span>`;
+    container.appendChild(bar);
+  });
+}
+
+function buildLocationOptions(locations) {
+  const sel = document.getElementById('filter-location');
+  locations.forEach((loc) => {
+    const opt = document.createElement('option');
+    opt.value = loc;
+    opt.textContent = loc;
+    sel.appendChild(opt);
+  });
+}
+
+function buildCategoryPills() {
+  const cats = ['All', 'Agriculture', 'Economics', 'Agribusiness', 'Business Administration'];
+  const wrap = document.getElementById('category-pills');
+  wrap.innerHTML = '';
+  cats.forEach((cat) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'pill' + (cat === 'All' ? ' active' : '');
+    btn.textContent = cat;
+    btn.dataset.cat = cat === 'All' ? '' : cat;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.pill').forEach((p) => p.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilters.category = btn.dataset.cat;
+      document.getElementById('filter-category').value = btn.dataset.cat;
+      showingFavoritesOnly = false;
+      refreshJobs();
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+function catClass(cat) {
+  if (cat === 'Economics') return 'economics';
+  if (cat === 'Agribusiness') return 'agribusiness';
+  if (cat === 'Business Administration') return 'business';
+  return '';
+}
+
+function formatSalary(job) {
+  const amount = job.salary || 0;
+  if (!amount) return 'Salary not disclosed';
+  return `MWK ${amount.toLocaleString()}/mo`;
+}
+
+function formatPosted(days) {
+  if (days === 0) return 'Today';
+  if (days === 1) return '1 day ago';
+  return `${days} days ago`;
+}
+
+// ---------- FETCH + RENDER JOBS ----------
+async function refreshJobs() {
+  showingFavoritesOnly = false;
+  const query = buildQuery({ ...currentFilters, sort: currentSort });
+  const jobs = await fetchJSON('/api/jobs' + (query ? `?${query}` : ''));
+  allJobs = mergeJobLists(allJobs, jobs);
+  renderJobGrid(jobs, { emptyMessage: true });
+}
+
+function mergeJobLists(existing, incoming) {
+  const map = new Map(existing.map((j) => [j.id, j]));
+  incoming.forEach((j) => map.set(j.id, j));
+  return [...map.values()];
+}
+
+function renderJobGrid(jobs, opts = {}) {
+  const grid = document.getElementById('job-grid');
+  const count = document.getElementById('result-count');
+  count.textContent = `${jobs.length} role${jobs.length !== 1 ? 's' : ''} found`;
+
+  grid.innerHTML = '';
+
+  if (jobs.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.style.gridColumn = '1/-1';
+    if (opts.emptyMessage) {
+      empty.innerHTML = `<h3>No roles match those filters</h3><p>Try a broader keyword or clear a filter or two.</p><button class="clear-filters" id="clear-filters-btn">Clear all filters</button>`;
+    } else {
+      empty.innerHTML = `<h3>No saved jobs yet</h3><p>Tap the star on any listing to save it here.</p>`;
+    }
+    grid.appendChild(empty);
+    const clearBtn = document.getElementById('clear-filters-btn');
+    if (clearBtn) clearBtn.addEventListener('click', clearFilters);
+    return;
+  }
+
+  jobs.forEach((job) => {
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'job-card';
+    card.setAttribute('data-id', job.id);
+    card.innerHTML = `
+      <div class="job-card-top">
+        <span class="job-cat ${catClass(job.category)}">${job.category}</span>
+        <span class="fav-btn ${favorites.has(job.id) ? 'active' : ''}" data-fav="${job.id}" role="button" aria-label="Save job">${favorites.has(job.id) ? '★' : '☆'}</span>
+      </div>
+      <div class="job-title">${job.title}</div>
+      <div class="job-meta"><span>${job.company}</span>&nbsp;·&nbsp;<span>${job.location}</span>&nbsp;·&nbsp;<span>${job.type}</span></div>
+      <div class="job-desc">${job.desc}</div>
+      <div class="job-card-bottom">
+        <span class="job-salary">${formatSalary(job)}</span>
+        <span class="job-posted">${formatPosted(job.postedDaysAgo)}</span>
+      </div>
+    `;
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('[data-fav]')) return;
+      openModal(job);
+    });
+    grid.appendChild(card);
+  });
+
+  grid.querySelectorAll('[data-fav]').forEach((star) => {
+    star.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleFavorite(parseInt(star.dataset.fav, 10), jobs);
+    });
+  });
+}
+
+function toggleFavorite(id, currentList) {
+  if (favorites.has(id)) favorites.delete(id);
+  else favorites.add(id);
+  localStorage.setItem('agrijobhub_favorites', JSON.stringify([...favorites]));
+  document.getElementById('fav-count').textContent = favorites.size;
+  if (showingFavoritesOnly) {
+    showFavorites();
+  } else {
+    renderJobGrid(currentList, { emptyMessage: true });
+  }
+}
+
+function clearFilters() {
+  currentFilters = { q: '', category: '', location: '', type: '' };
+  document.getElementById('q').value = '';
+  document.getElementById('filter-category').value = '';
+  document.getElementById('filter-location').value = '';
+  document.getElementById('filter-type').value = '';
+  document.querySelectorAll('.pill').forEach((p) => p.classList.remove('active'));
+  const allPill = document.querySelector('.pill[data-cat=""]');
+  if (allPill) allPill.classList.add('active');
+  refreshJobs();
+}
+
+function showFavorites() {
+  showingFavoritesOnly = true;
+  const favJobs = allJobs.filter((j) => favorites.has(j.id));
+  renderJobGrid(favJobs, { emptyMessage: false });
+  document.getElementById('listings').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ---------- MODAL: job details ----------
+function openModal(job) {
+  document.getElementById('modal-cat').textContent = job.category;
+  document.getElementById('modal-cat').className = 'job-cat ' + catClass(job.category);
+  document.getElementById('modal-title').textContent = job.title;
+  document.getElementById('modal-meta').innerHTML = `<span>${job.company}</span>&nbsp;·&nbsp;<span>${job.location}</span>&nbsp;·&nbsp;<span>${job.type}</span>&nbsp;·&nbsp;<span>${formatSalary(job)}</span>`;
+  document.getElementById('modal-desc').textContent = job.desc;
+  const reqList = document.getElementById('modal-reqs');
+  reqList.innerHTML = '';
+  (job.reqs || []).forEach((r) => {
+    const li = document.createElement('li');
+    li.textContent = r;
+    reqList.appendChild(li);
+  });
+  document.getElementById('modal-apply-confirm').classList.remove('show');
+  const saveBtn = document.getElementById('modal-save');
+  saveBtn.textContent = favorites.has(job.id) ? 'Saved ✓' : 'Save job';
+  saveBtn.onclick = () => {
+    toggleFavorite(job.id, allJobs);
+    saveBtn.textContent = favorites.has(job.id) ? 'Saved ✓' : 'Save job';
+  };
+  document.getElementById('modal-apply').onclick = () => {
+    document.getElementById('modal-apply-confirm').classList.add('show');
+  };
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+// ---------- COMPANIES / RESOURCES ----------
+function buildCompanies(list) {
+  const grid = document.getElementById('company-grid');
+  grid.innerHTML = '';
+  list.forEach((c) => {
+    const card = document.createElement('div');
+    card.className = 'company-card';
+    card.innerHTML = `
+      <div class="company-mark" style="background:${c.color}">${c.initials}</div>
+      <h3>${c.name}</h3>
+      <p>${c.blurb}</p>
+      <span class="company-openings">${c.openings} open role${c.openings !== 1 ? 's' : ''}</span>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function buildResources(list) {
+  const grid = document.getElementById('resource-grid');
+  grid.innerHTML = '';
+  list.forEach((r) => {
+    const card = document.createElement('div');
+    card.className = 'resource-card';
+    card.innerHTML = `
+      <div class="resource-strip"></div>
+      <div class="resource-body">
+        <span class="resource-cat">${r.cat}</span>
+        <h3>${r.title}</h3>
+        <p>${r.excerpt}</p>
+        <span class="resource-meta">${r.meta}</span>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ---------- EVENTS ----------
+function wireEvents() {
+  document.getElementById('search-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    currentFilters.q = document.getElementById('q').value;
+    currentFilters.category = document.getElementById('filter-category').value;
+    currentFilters.location = document.getElementById('filter-location').value;
+    currentFilters.type = document.getElementById('filter-type').value;
+    document.querySelectorAll('.pill').forEach((p) => p.classList.remove('active'));
+    const match = [...document.querySelectorAll('.pill')].find((p) => p.dataset.cat === currentFilters.category);
+    if (match) match.classList.add('active');
+    refreshJobs();
+    document.getElementById('listings').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  document.getElementById('sort-select').addEventListener('change', (e) => {
+    currentSort = e.target.value;
+    refreshJobs();
+  });
+
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  document.getElementById('modal-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'modal-overlay') closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeModal();
+      closePostModal();
+    }
+  });
+
+  document.getElementById('nav-favorites').addEventListener('click', (e) => {
+    e.preventDefault();
+    showFavorites();
+  });
+
+  document.getElementById('alert-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = e.target.querySelector('input[type="email"]');
+    try {
+      await fetchJSON('/api/alerts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: input.value })
+      });
+      document.getElementById('alert-confirm').classList.add('show');
+      e.target.reset();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+
+  // Post-a-job modal
+  document.getElementById('post-job-btn').addEventListener('click', () => {
+    document.getElementById('post-overlay').classList.add('open');
+  });
+  document.getElementById('post-close').addEventListener('click', closePostModal);
+  document.getElementById('post-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'post-overlay') closePostModal();
+  });
+  document.getElementById('post-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const data = Object.fromEntries(new FormData(form).entries());
+    try {
+      await fetchJSON('/api/jobs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      document.getElementById('post-confirm').classList.add('show');
+      form.reset();
+      await refreshJobs();
+      setTimeout(() => {
+        closePostModal();
+        document.getElementById('post-confirm').classList.remove('show');
+      }, 1400);
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+}
+
+function closePostModal() {
+  document.getElementById('post-overlay').classList.remove('open');
+}
+
+init();
